@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン / 新規登録</title>
+</head>
+<body>
+<h1>Study Marathon - ログイン / 新規登録</h1>
+
+<div>
+    <p th:if="${param.error}"><strong>ログイン失敗:</strong> ユーザー名またはパスワードが正しくありません。</p>
+    <p th:if="${param.logout}"><strong>ログアウトしました。</strong></p>
+    <p th:if="${param.success}"><strong>ログイン成功:</strong> 学習記録画面にリダイレクトしました。</p>
+</div>
+
+<div>
+    <h2>ログイン</h2>
+    <form th:action="@{/login}" method="post">
+        <div>
+            <label for="username">ユーザー名</label>
+            <input type="text" id="username" name="username"/>
+        </div>
+        <div>
+            <label for="password">パスワード</label>
+            <input type="password" id="password" name="password"/>
+        </div>
+        <div>
+            <button type="submit">ログイン</button>
+        </div>
+        <div>
+            <!-- 追加のメッセージは上部の共通領域で表示 -->
+        </div>
+    </form>
+</div>
+
+<hr/>
+
+<div>
+    <h2>新規登録</h2>
+    <form th:action="@{/register}" th:object="${userRegisterForm}" method="post">
+        <div>
+            <label for="reg-username">ユーザー名</label>
+            <input type="text" id="reg-username" th:field="*{username}"/>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+        </div>
+        <div>
+            <label for="reg-email">メールアドレス</label>
+            <input type="email" id="reg-email" th:field="*{email}"/>
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div>
+            <label for="reg-password">パスワード</label>
+            <input type="password" id="reg-password" th:field="*{password}"/>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+        <div>
+            <label for="reg-confirmPassword">パスワード(確認)</label>
+            <input type="password" id="reg-confirmPassword" th:field="*{confirmPassword}"/>
+            <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+        </div>
+        <div>
+            <button type="submit">新規登録</button>
+        </div>
+        <div>
+            <p th:if="${registerSuccess}">新規登録が完了しました。ログインフォームからログインしてください。</p>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

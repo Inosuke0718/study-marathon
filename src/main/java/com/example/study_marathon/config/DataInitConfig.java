@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,7 +20,9 @@ public class DataInitConfig {
     private static final Logger log = LoggerFactory.getLogger(DataInitConfig.class);
 
     @Bean
-    public CommandLineRunner dataInitializer(UsersRepository usersRepository, StudyLogsRepository studyLogsRepository) {
+    public CommandLineRunner dataInitializer(UsersRepository usersRepository,
+                                             StudyLogsRepository studyLogsRepository,
+                                             PasswordEncoder passwordEncoder) {
         return args -> {
             if (usersRepository.count() > 0) {
                 log.info("Skip data initialization because users already exist.");
@@ -29,7 +32,7 @@ public class DataInitConfig {
             Users user = new Users();
             user.setUsername("test-user");
             user.setEmail("test@example.com");
-            user.setPassword("dummy-password");
+            user.setPassword(passwordEncoder.encode("dummy-password"));
             user.setTotalPoints(0);
             usersRepository.save(user);
 
