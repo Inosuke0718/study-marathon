@@ -14,8 +14,8 @@ public class StudyLogForm {
     private LocalDate studyDate;
 
     @NotNull
-    @Min(1)
-    @Max(1440)
+    @Min(value = 1, message = "validation.duration.min")
+    @Max(value = 1440, message = "validation.duration.max")
     private Integer duration;
 
     @NotBlank

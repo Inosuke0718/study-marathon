@@ -14,7 +14,7 @@
         <div th:if="${#fields.hasErrors('studyDate')}" th:errors="*{studyDate}"></div>
     </div>
     <div>
-        <label>分数: <input type="number" th:field="*{duration}"></label>
+        <label>分数: <input type="number" th:field="*{duration}" min="1" max="1440"></label>
         <div th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
     </div>
     <div>
