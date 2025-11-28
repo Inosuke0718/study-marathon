@@ -5,7 +5,10 @@
     <title>ログイン / 新規登録</title>
 </head>
 <body>
-<h1>Study Marathon - ログイン / 新規登録</h1>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1>ログイン / 新規登録</h1>
 
 <div>
     <p th:if="${param.error}"><strong>ログイン失敗:</strong> ユーザー名またはパスワードが正しくありません。</p>

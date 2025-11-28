@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Study Marathon MVP (仮)</title>
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}"></div>
+
 <h1>Study Marathon MVP (仮)</h1>
 <p>Phase 0: 開発環境・プロジェクト初期セットアップ 完了確認用の仮トップページです。</p>
 <p>ログイン機能やランキングなどは後続の Phase で実装します。</p>
