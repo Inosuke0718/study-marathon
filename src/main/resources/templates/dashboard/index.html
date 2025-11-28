@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ダッシュボード</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1>ホーム(ダッシュボード)</h1>
+
+<section>
+    <h2>今週の学習時間</h2>
+    <p th:if="${weeklyTotalMinutes == 0}">まだ今週の学習記録がありません。</p>
+    <p th:if="${weeklyTotalMinutes > 0}">
+        今週の学習時間：
+        <span th:text="${weeklyTotalHours}"></span>時間
+        <span th:text="${weeklyTotalRemainMinutes}"></span>分
+    </p>
+</section>
+
+<section>
+    <h2>学習記録の登録</h2>
+    <form th:action="@{/dashboard/logs}" th:object="${studyLogForm}" method="post">
+        <div>
+            <label>日付: <input type="date" th:field="*{studyDate}"></label>
+            <div th:if="${#fields.hasErrors('studyDate')}" th:errors="*{studyDate}"></div>
+        </div>
+        <div>
+            <label>分数: <input type="number" th:field="*{duration}"></label>
+            <div th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+        </div>
+        <div>
+            <label>内容: <input type="text" th:field="*{content}"></label>
+            <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+        </div>
+        <div>
+            <button type="submit">登録</button>
+        </div>
+    </form>
+</section>
+
+<section>
+    <h2>最新の記録一覧（最新20件）</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>日付</th>
+            <th>分数</th>
+            <th>内容</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="log : ${logs}">
+            <td th:text="${log.id}"></td>
+            <td th:text="${log.studyDate}"></td>
+            <td th:text="${log.duration}"></td>
+            <td th:text="${log.content}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h2>週間ランキング(枠のみ / Phase6で実装)</h2>
+    <p>週間ランキングは次の Phase で実装予定です。</p>
+</section>
+
+</body>
+</html>

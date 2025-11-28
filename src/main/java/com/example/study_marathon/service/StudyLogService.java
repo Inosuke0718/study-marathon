@@ -9,6 +9,8 @@ import com.example.study_marathon.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +39,21 @@ public class StudyLogService {
     public List<StudyLogs> getLatestLogs() {
         Users user = getCurrentUser();
         return studyLogsRepository.findTop20ByUserOrderByStudyDateDesc(user);
+    }
+
+    @Transactional(readOnly = true)
+    public int getWeeklyTotalMinutesForCurrentUser() {
+        Users user = getCurrentUser();
+
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
+
+        List<StudyLogs> weeklyLogs = studyLogsRepository
+                .findByUserAndStudyDateBetweenOrderByStudyDateAsc(user, startOfWeek, today);
+
+        return weeklyLogs.stream()
+                .mapToInt(StudyLogs::getDuration)
+                .sum();
     }
 
     @Transactional

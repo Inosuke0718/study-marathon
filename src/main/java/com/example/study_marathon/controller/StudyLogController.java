@@ -30,13 +30,19 @@ public class StudyLogController {
     @PostMapping
     public String createLog(@Valid @ModelAttribute("studyLogForm") StudyLogForm form,
                             BindingResult bindingResult,
-                            Model model) {
+                            Model model,
+                            @RequestParam(value = "redirectTo", required = false) String redirectTo) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("logs", studyLogService.getLatestLogs());
             return "study_logs/index";
         }
 
         studyLogService.createLog(form);
+
+        if (redirectTo != null && !redirectTo.isBlank()) {
+            return "redirect:" + redirectTo;
+        }
+
         return "redirect:/study-logs";
     }
 
