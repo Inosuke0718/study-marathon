@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学習記録一覧</title>
+</head>
+<body>
+<h1>学習記録</h1>
+
+<h2>新規登録</h2>
+<form th:action="@{/study-logs}" th:object="${studyLogForm}" method="post">
+    <div>
+        <label>日付: <input type="date" th:field="*{studyDate}"></label>
+        <div th:if="${#fields.hasErrors('studyDate')}" th:errors="*{studyDate}"></div>
+    </div>
+    <div>
+        <label>分数: <input type="number" th:field="*{duration}"></label>
+        <div th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+    </div>
+    <div>
+        <label>内容: <input type="text" th:field="*{content}"></label>
+        <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
+    </div>
+    <div>
+        <button type="submit">登録</button>
+    </div>
+</form>
+
+<h2>記録一覧（最新20件）</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>日付</th>
+        <th>分数</th>
+        <th>内容</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="log : ${logs}">
+        <td th:text="${log.id}"></td>
+        <td th:text="${log.studyDate}"></td>
+        <td th:text="${log.duration}"></td>
+        <td th:text="${log.content}"></td>
+        <td>
+            <form th:action="@{'/study-logs/' + ${log.id} + '/delete'}" method="post">
+                <button type="submit">削除</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

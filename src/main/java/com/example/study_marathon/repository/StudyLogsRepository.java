@@ -12,4 +12,6 @@ public interface StudyLogsRepository extends JpaRepository<StudyLogs, Long> {
     List<StudyLogs> findByUserOrderByStudyDateDesc(Users user);
 
     List<StudyLogs> findByUserAndStudyDateBetweenOrderByStudyDateAsc(Users user, LocalDate start, LocalDate end);
+
+    List<StudyLogs> findTop20ByUserOrderByStudyDateDesc(Users user);
 }
