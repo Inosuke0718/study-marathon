@@ -8,94 +8,98 @@
 <body>
 
 <div layout:fragment="content">
-    <div class="text-center mb-12">
-        <h1 class="text-5xl md:text-7xl font-black mb-4 tracking-tighter">JOIN US</h1>
-        <p class="text-xl font-bold text-gray-600">Start your study marathon today.</p>
+    <div class="text-center mb-5">
+        <h1 class="display-2 fw-bold mb-3 ls-tight" style="font-family: var(--font-heading);">JOIN US</h1>
+        <p class="h4 text-muted">Start your study marathon today.</p>
     </div>
 
     <!-- Notification Area -->
-    <div class="max-w-4xl mx-auto mb-8 space-y-4">
-        <div th:if="${param.error}" class="bg-red-100 border-2 border-black p-4 flex items-center gap-3 shadow-neo-sm">
-            <span class="bg-red-500 text-white font-bold px-2 py-1 border-2 border-black text-xs">ERROR</span>
-            <span class="font-bold">Login failed. Check your username or password.</span>
+    <div class="container mb-5" style="max-width: 800px;">
+        <div th:if="${param.error}" class="alert alert-danger border-dark d-flex align-items-center gap-3 shadow-sm rounded-0" role="alert">
+            <span class="badge bg-danger border border-dark rounded-0">ERROR</span>
+            <div class="fw-bold">Login failed. Check your username or password.</div>
         </div>
-        <div th:if="${param.logout}" class="bg-blue-100 border-2 border-black p-4 flex items-center gap-3 shadow-neo-sm">
-            <span class="bg-brand-blue text-white font-bold px-2 py-1 border-2 border-black text-xs">INFO</span>
-            <span class="font-bold">You have been logged out.</span>
+        <div th:if="${param.logout}" class="alert alert-info border-dark d-flex align-items-center gap-3 shadow-sm rounded-0" role="alert">
+            <span class="badge bg-retro-blue border border-dark rounded-0">INFO</span>
+            <div class="fw-bold">You have been logged out.</div>
         </div>
-        <div th:if="${param.success}" class="bg-green-100 border-2 border-black p-4 flex items-center gap-3 shadow-neo-sm">
-            <span class="bg-green-500 text-white font-bold px-2 py-1 border-2 border-black text-xs">SUCCESS</span>
-            <span class="font-bold">Login successful. Redirecting...</span>
+        <div th:if="${param.success}" class="alert alert-success border-dark d-flex align-items-center gap-3 shadow-sm rounded-0" role="alert">
+            <span class="badge bg-success border border-dark rounded-0">SUCCESS</span>
+            <div class="fw-bold">Login successful. Redirecting...</div>
         </div>
-        <div th:if="${registerSuccess}" class="bg-brand-orange border-2 border-black p-4 flex items-center gap-3 shadow-neo-sm text-white">
-            <span class="bg-white text-black font-bold px-2 py-1 border-2 border-black text-xs">WELCOME</span>
-            <span class="font-bold">Registration complete! Please login below.</span>
+        <div th:if="${registerSuccess}" class="alert bg-retro-orange border-dark text-white d-flex align-items-center gap-3 shadow-sm rounded-0" role="alert">
+            <span class="badge bg-white text-dark border border-dark rounded-0">WELCOME</span>
+            <div class="fw-bold">Registration complete! Please login below.</div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    <div class="row justify-content-center gap-4">
         
         <!-- Login Section -->
-        <section class="neo-card p-8 bg-white">
-            <h2 class="text-3xl font-black mb-6 border-b-4 border-black inline-block">LOGIN</h2>
-            <form th:action="@{/login}" method="post" class="space-y-6">
-                <div>
-                    <label for="username" class="block font-bold mb-2 text-sm uppercase">Username</label>
-                    <input type="text" id="username" name="username" 
-                           class="neo-input w-full p-4 text-lg font-bold bg-gray-50 focus:bg-white"/>
-                </div>
-                <div>
-                    <label for="password" class="block font-bold mb-2 text-sm uppercase">Password</label>
-                    <input type="password" id="password" name="password" 
-                           class="neo-input w-full p-4 text-lg font-bold bg-gray-50 focus:bg-white"/>
-                </div>
-                <div class="pt-4">
-                    <button type="submit" class="neo-btn bg-brand-blue text-white w-full py-4 text-xl uppercase tracking-widest hover:bg-blue-700">
-                        Login
-                    </button>
-                </div>
-            </form>
-        </section>
+        <div class="col-md-5">
+            <section class="card p-4 h-100">
+                <h2 class="h3 fw-bold mb-4 border-bottom border-dark d-inline-block pb-2">LOGIN</h2>
+                <form th:action="@{/login}" method="post" class="d-flex flex-column gap-3">
+                    <div>
+                        <label for="username" class="form-label fw-bold text-uppercase small">Username</label>
+                        <input type="text" id="username" name="username" 
+                               class="form-control form-control-lg bg-light fw-bold"/>
+                    </div>
+                    <div>
+                        <label for="password" class="form-label fw-bold text-uppercase small">Password</label>
+                        <input type="password" id="password" name="password" 
+                               class="form-control form-control-lg bg-light fw-bold"/>
+                    </div>
+                    <div class="pt-3">
+                        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold text-uppercase ls-widest">
+                            Login
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
 
         <!-- Register Section -->
-        <section class="neo-card p-8 bg-gray-100 relative">
-            <div class="absolute -top-3 -right-3 bg-brand-orange text-white border-2 border-black px-4 py-1 font-black transform rotate-3 shadow-sm">
-                NEW HERE?
-            </div>
-            
-            <h2 class="text-3xl font-black mb-6 border-b-4 border-gray-400 inline-block text-gray-700">REGISTER</h2>
-            <form th:action="@{/register}" th:object="${userRegisterForm}" method="post" class="space-y-4">
-                <div>
-                    <label for="reg-username" class="block font-bold mb-1 text-sm uppercase text-gray-600">Username</label>
-                    <input type="text" id="reg-username" th:field="*{username}"
-                           class="neo-input w-full p-3 font-bold bg-white"/>
-                    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-red-600 font-bold text-xs mt-1"></div>
+        <div class="col-md-5">
+            <section class="card p-4 bg-light h-100 position-relative">
+                <div class="position-absolute top-0 end-0 mt-n2 me-n2 badge bg-retro-orange border border-dark text-white p-2 transform rotate-3 shadow-sm" style="transform: rotate(3deg);">
+                    NEW HERE?
                 </div>
-                <div>
-                    <label for="reg-email" class="block font-bold mb-1 text-sm uppercase text-gray-600">Email</label>
-                    <input type="email" id="reg-email" th:field="*{email}"
-                           class="neo-input w-full p-3 font-bold bg-white"/>
-                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-red-600 font-bold text-xs mt-1"></div>
-                </div>
-                <div>
-                    <label for="reg-password" class="block font-bold mb-1 text-sm uppercase text-gray-600">Password</label>
-                    <input type="password" id="reg-password" th:field="*{password}"
-                           class="neo-input w-full p-3 font-bold bg-white"/>
-                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-red-600 font-bold text-xs mt-1"></div>
-                </div>
-                <div>
-                    <label for="reg-confirmPassword" class="block font-bold mb-1 text-sm uppercase text-gray-600">Confirm Password</label>
-                    <input type="password" id="reg-confirmPassword" th:field="*{confirmPassword}"
-                           class="neo-input w-full p-3 font-bold bg-white"/>
-                    <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="text-red-600 font-bold text-xs mt-1"></div>
-                </div>
-                <div class="pt-4">
-                    <button type="submit" class="neo-btn bg-white text-black w-full py-3 font-bold hover:bg-gray-200">
-                        Create Account
-                    </button>
-                </div>
-            </form>
-        </section>
+                
+                <h2 class="h3 fw-bold mb-4 border-bottom border-secondary d-inline-block pb-2 text-secondary">REGISTER</h2>
+                <form th:action="@{/register}" th:object="${userRegisterForm}" method="post" class="d-flex flex-column gap-3">
+                    <div>
+                        <label for="reg-username" class="form-label fw-bold text-uppercase small text-muted">Username</label>
+                        <input type="text" id="reg-username" th:field="*{username}"
+                               class="form-control fw-bold"/>
+                        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger fw-bold small mt-1"></div>
+                    </div>
+                    <div>
+                        <label for="reg-email" class="form-label fw-bold text-uppercase small text-muted">Email</label>
+                        <input type="email" id="reg-email" th:field="*{email}"
+                               class="form-control fw-bold"/>
+                        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger fw-bold small mt-1"></div>
+                    </div>
+                    <div>
+                        <label for="reg-password" class="form-label fw-bold text-uppercase small text-muted">Password</label>
+                        <input type="password" id="reg-password" th:field="*{password}"
+                               class="form-control fw-bold"/>
+                        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger fw-bold small mt-1"></div>
+                    </div>
+                    <div>
+                        <label for="reg-confirmPassword" class="form-label fw-bold text-uppercase small text-muted">Confirm Password</label>
+                        <input type="password" id="reg-confirmPassword" th:field="*{confirmPassword}"
+                               class="form-control fw-bold"/>
+                        <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="text-danger fw-bold small mt-1"></div>
+                    </div>
+                    <div class="pt-3">
+                        <button type="submit" class="btn btn-light border-dark w-100 py-2 fw-bold hover-bg-gray-200">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
     </div>
 </div>
 
