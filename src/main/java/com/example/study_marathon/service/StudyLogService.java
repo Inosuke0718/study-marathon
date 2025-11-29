@@ -1,11 +1,14 @@
 package com.example.study_marathon.service;
 
 import com.example.study_marathon.dto.StudyLogForm;
+import com.example.study_marathon.dto.WeeklyRankingDto;
 import com.example.study_marathon.entity.StudyLogs;
 import com.example.study_marathon.entity.Users;
 import com.example.study_marathon.repository.StudyLogsRepository;
 import com.example.study_marathon.repository.UsersRepository;
 import com.example.study_marathon.util.SecurityUtil;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +57,16 @@ public class StudyLogService {
         return weeklyLogs.stream()
                 .mapToInt(StudyLogs::getDuration)
                 .sum();
+    }
+
+    @Transactional(readOnly = true)
+    public List<WeeklyRankingDto> getWeeklyRankingForCurrentWeek() {
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
+
+        Pageable topTen = PageRequest.of(0, 10);
+
+        return studyLogsRepository.findWeeklyRanking(startOfWeek, today, topTen);
     }
 
     @Transactional

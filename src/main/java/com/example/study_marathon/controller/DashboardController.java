@@ -29,6 +29,7 @@ public class DashboardController {
         model.addAttribute("weeklyTotalHours", hours);
         model.addAttribute("weeklyTotalRemainMinutes", minutes);
         model.addAttribute("logs", studyLogService.getLatestLogs());
+        model.addAttribute("weeklyRanking", studyLogService.getWeeklyRankingForCurrentWeek());
 
         if (form.getStudyDate() == null) {
             form.setStudyDate(java.time.LocalDate.now());
@@ -51,6 +52,7 @@ public class DashboardController {
             model.addAttribute("weeklyTotalHours", hours);
             model.addAttribute("weeklyTotalRemainMinutes", minutes);
             model.addAttribute("logs", studyLogService.getLatestLogs());
+            model.addAttribute("weeklyRanking", studyLogService.getWeeklyRankingForCurrentWeek());
 
             return "dashboard/index";
         }

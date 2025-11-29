@@ -63,8 +63,29 @@
 </section>
 
 <section>
-    <h2>週間ランキング(枠のみ / Phase6で実装)</h2>
-    <p>週間ランキングは次の Phase で実装予定です。</p>
+    <h2>週間ランキングTOP10</h2>
+
+    <p th:if="${#lists.isEmpty(weeklyRanking)}">まだランキング対象の学習記録がありません。</p>
+
+    <table border="1" th:if="${!#lists.isEmpty(weeklyRanking)}">
+        <thead>
+        <tr>
+            <th>順位</th>
+            <th>ユーザー名</th>
+            <th>今週の学習時間</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="rank, stat : ${weeklyRanking}">
+            <td th:text="${stat.index + 1}"></td>
+            <td th:text="${rank.username}"></td>
+            <td>
+                <span th:text="${rank.totalMinutes / 60}"></span>時間
+                <span th:text="${rank.totalMinutes % 60}"></span>分
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </section>
 
 </body>
