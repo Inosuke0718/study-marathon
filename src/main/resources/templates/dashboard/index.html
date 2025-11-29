@@ -1,92 +1,171 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
 <head>
-    <meta charset="UTF-8">
     <title>ダッシュボード</title>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
 
-<h1>ホーム(ダッシュボード)</h1>
+<div layout:fragment="content">
+    
+    <div class="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
+        <h1 class="text-4xl md:text-6xl font-black text-black tracking-tighter">
+            DASHBOARD
+        </h1>
+        <p class="text-gray-600 font-bold text-lg">Keep pushing your limits.</p>
+    </div>
 
-<section>
-    <h2>今週の学習時間</h2>
-    <p th:if="${weeklyTotalMinutes == 0}">まだ今週の学習記録がありません。</p>
-    <p th:if="${weeklyTotalMinutes > 0}">
-        今週の学習時間：
-        <span th:text="${weeklyTotalHours}"></span>時間
-        <span th:text="${weeklyTotalRemainMinutes}"></span>分
-    </p>
-</section>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Main Stats & Input -->
+        <div class="lg:col-span-2 space-y-8">
+            
+            <!-- Weekly Progress Section -->
+            <section class="neo-card bg-white p-6 md:p-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-brand-orange text-white font-bold px-3 py-1 border-l-2 border-b-2 border-black text-sm">
+                    WEEKLY GOAL
+                </div>
+                
+                <h2 class="text-2xl font-black mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    THIS WEEK
+                </h2>
 
-<section>
-    <h2>学習記録の登録</h2>
-    <form th:action="@{/dashboard/logs}" th:object="${studyLogForm}" method="post">
-        <div>
-            <label>日付: <input type="date" th:field="*{studyDate}"></label>
-            <div th:if="${#fields.hasErrors('studyDate')}" th:errors="*{studyDate}"></div>
+                <div th:if="${weeklyTotalMinutes == 0}" class="text-gray-500 italic border-2 border-dashed border-gray-300 p-4 text-center">
+                    No study records yet. Start now!
+                </div>
+                
+                <div th:if="${weeklyTotalMinutes > 0}">
+                    <div class="flex items-end gap-2 mb-2">
+                        <span class="text-6xl font-black text-brand-blue" th:text="${weeklyTotalHours}">0</span>
+                        <span class="text-xl font-bold mb-2">hours</span>
+                        <span class="text-6xl font-black text-brand-blue ml-4" th:text="${weeklyTotalRemainMinutes}">0</span>
+                        <span class="text-xl font-bold mb-2">mins</span>
+                    </div>
+                    
+                    <!-- Fake Progress Bar for visual impact -->
+                    <div class="w-full h-8 bg-gray-200 border-2 border-black relative mt-4">
+                        <div class="h-full bg-brand-orange border-r-2 border-black" 
+                             th:style="'width: ' + ${weeklyTotalMinutes > 600 ? 100 : (weeklyTotalMinutes * 100 / 600)} + '%'"></div>
+                        
+                        <!-- Stripes pattern overlay -->
+                        <div class="absolute inset-0 opacity-20" 
+                             style="background-image: linear-gradient(45deg, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent); background-size: 20px 20px;"></div>
+                    </div>
+                    <p class="text-right text-xs font-bold mt-1 text-gray-500">Target: 10 hours / week</p>
+                </div>
+            </section>
+
+            <!-- Input Section -->
+            <section class="neo-card bg-brand-blue p-6 md:p-8 text-white">
+                <h2 class="text-2xl font-black mb-6 text-white border-b-2 border-white/20 pb-2">
+                    LOG ACTIVITY
+                </h2>
+                
+                <form th:action="@{/dashboard/logs}" th:object="${studyLogForm}" method="post" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold mb-1 text-sm">DATE</label>
+                            <input type="date" th:field="*{studyDate}" 
+                                   class="neo-input w-full p-3 text-black font-bold rounded-none focus:ring-0 focus:border-black bg-white">
+                            <div th:if="${#fields.hasErrors('studyDate')}" th:errors="*{studyDate}" class="text-brand-orange bg-white px-2 py-1 mt-1 text-xs font-bold border border-black inline-block"></div>
+                        </div>
+                        <div>
+                            <label class="block font-bold mb-1 text-sm">DURATION (MIN)</label>
+                            <input type="number" th:field="*{duration}" placeholder="60"
+                                   class="neo-input w-full p-3 text-black font-bold rounded-none focus:ring-0 focus:border-black bg-white">
+                            <div th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}" class="text-brand-orange bg-white px-2 py-1 mt-1 text-xs font-bold border border-black inline-block"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-1 text-sm">CONTENT</label>
+                        <input type="text" th:field="*{content}" placeholder="What did you learn today?"
+                               class="neo-input w-full p-3 text-black font-bold rounded-none focus:ring-0 focus:border-black bg-white">
+                        <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="text-brand-orange bg-white px-2 py-1 mt-1 text-xs font-bold border border-black inline-block"></div>
+                    </div>
+                    
+                    <div class="pt-4 text-right">
+                        <button type="submit" class="neo-btn bg-brand-orange text-white px-8 py-3 hover:bg-orange-600 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px]">
+                            RECORD LOG
+                        </button>
+                    </div>
+                </form>
+            </section>
+            
+            <!-- Recent Logs Table -->
+            <section class="neo-card p-6 md:p-8">
+                <h2 class="text-xl font-black mb-4 uppercase">Recent Activities</h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border-2 border-black">
+                        <thead>
+                        <tr class="bg-gray-100 text-left">
+                            <th class="border-2 border-black p-3 font-black w-16">ID</th>
+                            <th class="border-2 border-black p-3 font-black w-32">DATE</th>
+                            <th class="border-2 border-black p-3 font-black w-24">TIME</th>
+                            <th class="border-2 border-black p-3 font-black">CONTENT</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="log : ${logs}" class="hover:bg-blue-50 transition-colors">
+                            <td class="border-2 border-black p-3 font-mono text-sm" th:text="${log.id}"></td>
+                            <td class="border-2 border-black p-3 font-bold" th:text="${log.studyDate}"></td>
+                            <td class="border-2 border-black p-3">
+                                <span class="bg-black text-white px-2 py-1 text-xs font-bold rounded-sm" th:text="${log.duration} + ' min'"></span>
+                            </td>
+                            <td class="border-2 border-black p-3" th:text="${log.content}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
-        <div>
-            <label>分数: <input type="number" th:field="*{duration}"></label>
-            <div th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+
+        <!-- Right Column: Ranking -->
+        <div class="lg:col-span-1">
+            <section class="neo-card bg-yellow-300 p-6 sticky top-24">
+                <div class="flex items-center gap-2 mb-6 border-b-2 border-black pb-4">
+                    <span class="text-3xl">👑</span>
+                    <h2 class="text-2xl font-black">RANKING</h2>
+                </div>
+
+                <p th:if="${#lists.isEmpty(weeklyRanking)}" class="text-center font-bold py-8">No data available.</p>
+
+                <div th:if="${!#lists.isEmpty(weeklyRanking)}" class="space-y-4">
+                    <div th:each="rank, stat : ${weeklyRanking}" 
+                         class="flex items-center bg-white border-2 border-black p-3 shadow-neo-sm transform hover:-translate-y-1 transition-transform">
+                        
+                        <div class="w-10 h-10 flex items-center justify-center font-black text-xl border-2 border-black mr-3"
+                             th:classappend="${stat.index == 0 ? 'bg-brand-orange text-white' : (stat.index == 1 ? 'bg-gray-300' : (stat.index == 2 ? 'bg-yellow-600 text-white' : 'bg-gray-100'))}"
+                             th:text="${stat.index + 1}">
+                            1
+                        </div>
+                        
+                        <div class="flex-grow overflow-hidden">
+                            <div class="font-bold truncate" th:text="${rank.username}">User</div>
+                            <div class="text-xs text-gray-600 font-mono">
+                                <span th:text="${rank.totalMinutes / 60}"></span>h
+                                <span th:text="${rank.totalMinutes % 60}"></span>m
+                            </div>
+                        </div>
+                        
+                        <div th:if="${stat.index == 0}" class="text-2xl animate-pulse">🔥</div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-4 bg-white border-2 border-black text-center">
+                    <p class="font-black text-sm mb-2">MOTIVATION</p>
+                    <p class="italic text-xs">"Consistency is the key to success."</p>
+                </div>
+            </section>
         </div>
-        <div>
-            <label>内容: <input type="text" th:field="*{content}"></label>
-            <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
-        </div>
-        <div>
-            <button type="submit">登録</button>
-        </div>
-    </form>
-</section>
+        
+    </div>
 
-<section>
-    <h2>最新の記録一覧（最新20件）</h2>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>日付</th>
-            <th>分数</th>
-            <th>内容</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="log : ${logs}">
-            <td th:text="${log.id}"></td>
-            <td th:text="${log.studyDate}"></td>
-            <td th:text="${log.duration}"></td>
-            <td th:text="${log.content}"></td>
-        </tr>
-        </tbody>
-    </table>
-</section>
-
-<section>
-    <h2>週間ランキングTOP10</h2>
-
-    <p th:if="${#lists.isEmpty(weeklyRanking)}">まだランキング対象の学習記録がありません。</p>
-
-    <table border="1" th:if="${!#lists.isEmpty(weeklyRanking)}">
-        <thead>
-        <tr>
-            <th>順位</th>
-            <th>ユーザー名</th>
-            <th>今週の学習時間</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="rank, stat : ${weeklyRanking}">
-            <td th:text="${stat.index + 1}"></td>
-            <td th:text="${rank.username}"></td>
-            <td>
-                <span th:text="${rank.totalMinutes / 60}"></span>時間
-                <span th:text="${rank.totalMinutes % 60}"></span>分
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</section>
+</div>
 
 </body>
 </html>

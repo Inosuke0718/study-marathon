@@ -1,14 +1,59 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
 <head>
-    <meta charset="UTF-8">
-    <title>Study Marathon MVP (仮)</title>
+    <title>Welcome</title>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
 
-<h1>Study Marathon MVP (仮)</h1>
-<p>Phase 0: 開発環境・プロジェクト初期セットアップ 完了確認用の仮トップページです。</p>
-<p>ログイン機能やランキングなどは後続の Phase で実装します。</p>
+<div layout:fragment="content">
+    <div class="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8">
+        
+        <div class="space-y-2">
+            <h1 class="text-6xl md:text-9xl font-black tracking-tighter leading-none">
+                STUDY<br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-purple-600" style="-webkit-text-stroke: 3px black; text-stroke: 3px black;">MARATHON</span>
+            </h1>
+            <p class="text-xl md:text-3xl font-bold bg-yellow-300 inline-block px-4 py-1 border-2 border-black transform -rotate-2">
+                Don't Stop Learning.
+            </p>
+        </div>
+
+        <div class="max-w-2xl text-lg md:text-xl font-medium text-gray-700 mt-8">
+            <p>Phase 0: Development Environment Setup Complete.</p>
+            <p class="text-sm mt-2 text-gray-500">Ready to build the next generation learning platform.</p>
+        </div>
+
+        <div class="pt-8">
+            <a th:href="@{/login}" 
+               class="neo-btn bg-brand-orange text-white text-2xl md:text-3xl px-12 py-6 hover:bg-orange-600 transform hover:-translate-y-1 shadow-neo-lg flex items-center gap-4 no-underline">
+                <span>START RUNNING</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 w-full text-left">
+            <div class="neo-card p-6 bg-white">
+                <div class="text-4xl mb-4">🚀</div>
+                <h3 class="text-xl font-black mb-2">Track Progress</h3>
+                <p class="text-gray-600">Visualize your learning journey with intuitive charts and stats.</p>
+            </div>
+            <div class="neo-card p-6 bg-white">
+                <div class="text-4xl mb-4">🔥</div>
+                <h3 class="text-xl font-black mb-2">Stay Motivated</h3>
+                <p class="text-gray-600">Compete with others and earn badges to keep your streak alive.</p>
+            </div>
+            <div class="neo-card p-6 bg-white">
+                <div class="text-4xl mb-4">💎</div>
+                <h3 class="text-xl font-black mb-2">Clean Design</h3>
+                <p class="text-gray-600">Focus on what matters most: your study content.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
